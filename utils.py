@@ -543,28 +543,25 @@ class FIFOQueue(Queue):
             self.start = 0
         return e
 
-class Order(Queue):
+class Order:
     def __init__(self):
         self.A = []
-        self.start = 0
 
     def append(self, item):
         self.A.append(item)
 
     def __len__(self):
-        return len(self.A) - self.start
-
-
+        return len(self.A)
 
     def extend(self, items):
-        self.A = sorted(self.A, key=lambda node_x: node_x.path_cost)
-        items_ordered = sorted(items, key=lambda nodo: nodo.path_cost)
-        self.A.extend(items_ordered)
+        self.A.extend(items)
+        self.A.sort(key=lambda node: node.path_cost)
 
     def pop(self):
-        e = self.A[self.start]
-        self.start += 1
-        return e
+        if not self.A:
+            return None
+        return self.A.pop(0)
+
 
 
 ## Fig: The idea is we can define things like Fig[3,10] later.
