@@ -1,3 +1,6 @@
+import math
+
+import search
 
 #______________________________________________________________________________
 # Simple Data Structures: infinity, Dict, Struct
@@ -543,9 +546,10 @@ class FIFOQueue(Queue):
             self.start = 0
         return e
 
-class Order:
-    def __init__(self):
+class Order(Queue):
+    def __init__(self, problem):
         self.A = []
+
 
     def append(self, item):
         self.A.append(item)
@@ -556,6 +560,28 @@ class Order:
     def extend(self, items):
         self.A.extend(items)
         self.A.sort(key=lambda node: node.path_cost)
+
+    def pop(self):
+        if not self.A:
+            return None
+        return self.A.pop(0)
+
+class Heuristic:
+    def __init__(self, problem):
+        self.A = []
+        self.problem = problem
+
+    def append(self, item):
+        self.A.append(item)
+
+    def __len__(self):
+        return len(self.A)
+
+    def extend(self, items):
+        self.A.extend(items)
+        self.A.sort(key=lambda node: node.path_cost +
+                                     search.GPSProblem.h(self.problem, node))
+        print(self.A)
 
     def pop(self):
         if not self.A:

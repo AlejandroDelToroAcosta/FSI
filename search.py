@@ -1,16 +1,13 @@
 """Search (Chapters 3-4)
 
+
 The way to use this code is to subclass Problem to create a class of problems,
 then create problem instances and solve them with calls to the various search
 functions."""
 
-
-from utils import *
 import random
 import sys
-
-
-# ______________________________________________________________________________
+from utils import *
 
 
 class Problem:
@@ -121,6 +118,8 @@ def depth_first_graph_search(problem):
 def branch_and_bounch_search(problem, fringe):
     return graph_search(problem, Order())
 
+def heuristic_search(problem, fringe):
+    return graph_search(problem, Heuristic(problem))
 
 
 
