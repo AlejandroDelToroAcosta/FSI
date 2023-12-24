@@ -1,6 +1,3 @@
-import math
-
-import search
 
 #______________________________________________________________________________
 # Simple Data Structures: infinity, Dict, Struct
@@ -546,10 +543,9 @@ class FIFOQueue(Queue):
             self.start = 0
         return e
 
-class Order(Queue):
-    def __init__(self, problem):
+class Order:
+    def __init__(self):
         self.A = []
-
 
     def append(self, item):
         self.A.append(item)
@@ -566,29 +562,32 @@ class Order(Queue):
             return None
         return self.A.pop(0)
 
-class Heuristic:
-    def __init__(self, problem):
+class Heuristic(Queue):
+    def _init_(self, problem):
         self.A = []
-        self.problem = problem
+        self.start = 0
+        self.p = problem
+        self.keep = set()
 
     def append(self, item):
         self.A.append(item)
 
-    def __len__(self):
-        return len(self.A)
+    def _len_(self):
+        return len(self.A) - self.start
 
     def extend(self, items):
         self.A.extend(items)
-        self.A.sort(key=lambda node: node.path_cost +
-                                     search.GPSProblem.h(self.problem, node))
+        self.A = sorted(self.A, key=lambda node_x: node_x.path_cost + search.GPSProblem.h(self.p, node_x))
         print(self.A)
 
+
     def pop(self):
-        if not self.A:
-            return None
-        return self.A.pop(0)
-
-
+        while self.A:
+            e = self.A.pop(0)
+            if e.state not in self.keep:
+                self.keep.add(e.state)
+                return e
+        return None
 
 ## Fig: The idea is we can define things like Fig[3,10] later.
 ## Alas, it is Fig[3,10] not Fig[3.10], because that would be the same as Fig[3.1]
